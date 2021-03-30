@@ -43,15 +43,22 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { MainDashboardComponent } from './views/main-dashboard/main-dashboard.component';
 import { MapComponent } from './components/map/map.component';
+import { CrudService } from './services/crudService';
+import { LocationService } from './services/locationService';
+import { DisplayLocationsComponent } from './components/display-locations/display-locations.component';
+import { HttpClient, HttpClientModule } from '../../node_modules/@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
     MainDashboardComponent,
     MapComponent,
+    DisplayLocationsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     MatAutocompleteModule,
     MatBadgeModule,
     MatButtonModule,
@@ -124,7 +131,7 @@ import { MapComponent } from './components/map/map.component';
       MatTreeModule,
       MatNativeDateModule
   ],
-  providers: [],
+  providers: [CrudService, HttpClient, LocationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

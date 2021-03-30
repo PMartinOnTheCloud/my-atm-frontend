@@ -1,0 +1,5 @@
+<button mat-button *ngFor="let location of locationsArray">
+    <mat-icon>fingerprint</mat-icon> ID: {{ location.id }} <br> 
+    <mat-icon>face</mat-icon> Name : {{ location.name }} <br>
+    <mat-icon>location_on</mat-icon> Latitude: {{ location.lat }} | Longitude: {{ location.lon }} <hr>
+</button>

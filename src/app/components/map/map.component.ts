@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { LocationService } from '../../services/locationService';
 
 declare const L: any;
 
@@ -12,6 +12,8 @@ declare const L: any;
 
 export class MapComponent implements OnInit {
 
+  constructor(private locationService:LocationService) {}
+
   ngOnInit() {
     if (!navigator.geolocation) {
       console.log('location is not supported');
@@ -20,14 +22,20 @@ export class MapComponent implements OnInit {
     const cordenadaLon=-0.09;//Aqui se recogueria la longitud del trabajador por la base de datos
     const coordenadaZonLat=40.05;//Aqui estamos simulando una posicion en la que estaria la zona
     const coordenadaZonLon=0.05;//Aqui estamos simulando una posicion en la que estaria la zona
-    navigator.geolocation.getCurrentPosition((position) => {
+    navigator.geolocation.getCurrentPosition(async (position) => {
       const coords = position.coords;
       const latLong = [coords.latitude, coords.longitude];
       console.log(
         `lat: ${position.coords.latitude}, lon: ${position.coords.longitude}`
       );
       var mymap = L.map('mapid', { zoomControl: false, attributionControl: false}).setView([position.coords.latitude, position.coords.longitude], 13);
-      var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(mymap);
+      var locationsArray = await this.locationService.getUsersLocations();
+
+      locationsArray.forEach(element => {
+        L.marker([element['lat'],element['lon']]).addTo(mymap).bindPopup(`<strong>${element['name']}</strong>`);
+      });
+      
+      L.marker([position.coords.latitude, position.coords.longitude]).addTo(mymap).bindPopup('Mi Location').openPopup();
       //var mymap = L.map('mapid').setView([cordenadaLat, cordenadaLon], 13);//Aqui seria para poner el mapa en la zona especificada
       //var marker = L.marker([cordenadaLat, cordenadaLon]).addTo(mymap);//Aqui seria el marcador de un trabajador para ver su localizacion
 
